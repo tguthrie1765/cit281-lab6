@@ -1,37 +1,80 @@
-## Welcome to GitHub Pages
+In this lab I was introduced to Github, and I leaned about classes. I was able to create classes, add items to them, and delete items from them.
 
-You can use the [editor on GitHub](https://github.com/tguthrie1765/cit281-lab6/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+<br>
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Here is the code from lab 6
+```js
+class Book {
+  constructor(title, author, pubDate, isbn) {
+    this.title = title;
+    this.author = author;
+    this.pubDate = pubDate;
+    this.isbn = isbn;
+  }
+}
 
-### Markdown
+class Library {
+  constructor(name) {
+    this._name = name;
+    this._books = [];
+  }
+  get books() {
+    // Return copy of books
+    return JSON.parse(JSON.stringify(this._books));
+  }
+  get count() {
+    return this._books.length;
+  }
+  addBook(book = {}) {
+    const { title = "", author = "", pubDate = "", isbn = "" } = book;
+    if (title.length > 0 && author.length > 0) {
+      const newBook = { title, author, pubDate, isbn };
+      this._books.push(newBook);
+    }
+  }
+  deleteBook(isbn) {
+    let indexOfBookToRemove = null;
+    let index = 0;
+    for(const book of this._books){
+      if (book.isbn == isbn) {
+        indexOfBookToRemove = index;
+        break;
+      }
+      index += 1;
+    }
+  }
+ 
+  listBooks() {
+    for (const book of this._books) {
+      const { title, author, pubDate, isbn } = book;
+      console.log(
+        `Title: ${title}, Author: ${author}, PubDate: ${pubDate}, ISBN: ${isbn}`
+      );
+    }
+  }
+}
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
-```markdown
-Syntax highlighted code block
+// Create library object
+const library = new Library("New York Times Best Seller List");
 
-# Header 1
-## Header 2
-### Header 3
 
-- Bulleted
-- List
 
-1. Numbered
-2. List
 
-**Bold** and _Italic_ and `Code` text
+// Create books
+const atomicHabits = new Book("Atomic Habits", "James Clear", "10/16/2018", "0735211299");
+const theHillWeClimb = new Book("The Hill We Climb", "David Baldacci", "03/30/2021", "059346527X");
+const oceanPrey = new Book("Atomic Habits", "John Sandford", "04/13/2021", "1398505501");
 
-[Link](url) and ![Image](src)
+// Add books to library and output library count and books
+library.addBook(atomicHabits);
+library.addBook(theHillWeClimb);
+library.addBook(oceanPrey);
+console.log(`Book count: ${library.count}`);
+library.listBooks();
+
+// Delete a book and output library books
+console.log("* Library after delete *");
+library.deleteBook("059346527X");
+library.listBooks();
 ```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/tguthrie1765/cit281-lab6/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
